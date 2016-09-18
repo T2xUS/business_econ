@@ -1,0 +1,273 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>hw01</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-09-18"><meta name="DC.source" content="hw01.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Load data</a></li><li><a href="#2">Retrieve data columns</a></li><li><a href="#3">Chart 1: GDP</a></li><li><a href="#4">Chart 2: Nominal vs Real GDP</a></li><li><a href="#5">Chart 3: Real GDP vs Employment</a></li><li><a href="#6">Chart 4: Real GDP vs Industrial Production</a></li><li><a href="#7">Chart 5: Ind. Production vs Housing Starts</a></li><li><a href="#8">Chart 6: Inflation Rate</a></li></ul></div><h2>Load data<a name="1"></a></h2><pre class="codeinput">clc; clear <span class="string">all</span>; close <span class="string">all</span>; format <span class="string">compact</span>
+
+data_raw = xlsread(<span class="string">'Economic Charts 2015.xls'</span>,<span class="string">'Sheet1'</span>);
+</pre><h2>Retrieve data columns<a name="2"></a></h2><pre class="codeinput">clc;
+
+data = data_raw;
+data([1 2 3],:) = []; <span class="comment">%remove blank rows</span>
+<span class="comment">%data(:,[2 4 8 16]) = []; %remove blank columns</span>
+
+year = data(:,1);
+gdp = data(:,3);
+gdph = data(:,5);
+ip_times_100 = data(:,6);
+le_div_20 = data(:,7);
+le = data(:,9);
+le_lf = data(:,10);
+ip = data(:,11);
+inflation = data(:,12);
+pcu = data(:,13);
+ip_times_20 = data(:,14);
+hst = data(:,15);
+lf = data(:,17);
+</pre><h2>Chart 1: GDP<a name="3"></a></h2><pre class="codeinput">close <span class="string">all</span>;
+
+figure
+plot(year,gdp,<span class="string">'b'</span>)
+grid <span class="string">on</span>
+ylim([0,20000])
+set(gca,<span class="string">'YTickLabel'</span>,num2str(get(gca,<span class="string">'YTick'</span>)'))
+title(<span class="string">'GDP (1990-2015)'</span>)
+xlabel(<span class="string">'Year'</span>)
+ylabel(<span class="string">'Billions of Current Dollars'</span>)
+</pre><img vspace="5" hspace="5" src="hw01_01.png" alt=""> <h2>Chart 2: Nominal vs Real GDP<a name="4"></a></h2><pre class="codeinput">close <span class="string">all</span>;
+
+figure
+plot(year,gdp,<span class="string">'b'</span>)
+hold <span class="string">on</span>
+plot(year,gdph,<span class="string">'r'</span>)
+grid <span class="string">on</span>
+ylim([0,20000])
+set(gca,<span class="string">'YTickLabel'</span>,num2str(get(gca,<span class="string">'YTick'</span>)',<span class="string">'%d'</span>))
+title(<span class="string">'Nominal vs Real GDP (1990-2015)'</span>)
+xlabel(<span class="string">'Year'</span>)
+ylabel(<span class="string">'Billions of 2005 Dollars for Real GDP'</span>)
+legend(<span class="string">'Nominal GDP'</span>,<span class="string">'Infl. Adj. GDP'</span>,<span class="string">'Location'</span>,<span class="string">'best'</span>)
+</pre><img vspace="5" hspace="5" src="hw01_02.png" alt=""> <h2>Chart 3: Real GDP vs Employment<a name="5"></a></h2><pre class="codeinput">close <span class="string">all</span>;
+
+figure
+plot(year,gdph,<span class="string">'b'</span>)
+hold <span class="string">on</span>
+plot(year,le_div_20,<span class="string">'r'</span>)
+grid <span class="string">on</span>
+ylim([0,18000])
+set(gca,<span class="string">'YTickLabel'</span>,num2str(get(gca,<span class="string">'YTick'</span>)',<span class="string">'%d'</span>))
+title(<span class="string">'Real GDP vs Employment (1990-2015)'</span>)
+xlabel(<span class="string">'Year'</span>)
+ylabel(<span class="string">'Billions and Employment in Thousands/20'</span>)
+legend(<span class="string">'Real GDP'</span>,<span class="string">'Employment in Thousands/20'</span>,<span class="string">'Location'</span>,<span class="string">'best'</span>)
+</pre><img vspace="5" hspace="5" src="hw01_03.png" alt=""> <h2>Chart 4: Real GDP vs Industrial Production<a name="6"></a></h2><pre class="codeinput">close <span class="string">all</span>;
+
+figure
+plot(year,gdph,<span class="string">'b'</span>)
+hold <span class="string">on</span>
+plot(year,ip_times_100,<span class="string">'r'</span>)
+grid <span class="string">on</span>
+ylim([0,18000])
+set(gca,<span class="string">'YTickLabel'</span>,num2str(get(gca,<span class="string">'YTick'</span>)',<span class="string">'%d'</span>))
+title(<span class="string">'Real GDP vs Industrial Production (1990-2015)'</span>)
+xlabel(<span class="string">'Year'</span>)
+ylabel(<span class="string">'Billions of 2005 Dollars'</span>)
+legend(<span class="string">'Real GDP'</span>,<span class="string">'Industrial Production'</span>,<span class="string">'Location'</span>,<span class="string">'best'</span>)
+</pre><img vspace="5" hspace="5" src="hw01_04.png" alt=""> <h2>Chart 5: Ind. Production vs Housing Starts<a name="7"></a></h2><pre class="codeinput">close <span class="string">all</span>;
+
+figure
+plot(year,ip_times_20,<span class="string">'b'</span>)
+hold <span class="string">on</span>
+plot(year,hst,<span class="string">'r'</span>)
+grid <span class="string">on</span>
+ylim([0,2500])
+set(gca,<span class="string">'YTickLabel'</span>,num2str(get(gca,<span class="string">'YTick'</span>)',<span class="string">'%d'</span>))
+title(<span class="string">'Ind. Production vs Housing Starts (1990-2015)'</span>)
+xlabel(<span class="string">'Year'</span>)
+ylabel(<span class="string">'Housing Starts in Hundreds of Thousands'</span>)
+legend(<span class="string">'Industrial Production'</span>,<span class="string">'Housing Starts'</span>,<span class="string">'Location'</span>,<span class="string">'best'</span>)
+</pre><img vspace="5" hspace="5" src="hw01_05.png" alt=""> <h2>Chart 6: Inflation Rate<a name="8"></a></h2><pre class="codeinput">close <span class="string">all</span>;
+
+figure
+plot(year,inflation,<span class="string">'b'</span>)
+grid <span class="string">on</span>
+set(gca,<span class="string">'YTickLabel'</span>,sprintf(<span class="string">'%.2f\n'</span>,get(gca,<span class="string">'YTick'</span>)))
+title(<span class="string">'Inflation Rate (1990-2015)'</span>)
+xlabel(<span class="string">'Year'</span>)
+ylabel(<span class="string">'Percent Change'</span>)
+</pre><img vspace="5" hspace="5" src="hw01_06.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Load data
+clc; clear all; close all; format compact
+
+data_raw = xlsread('Economic Charts 2015.xls','Sheet1');
+
+%% Retrieve data columns
+clc;
+
+data = data_raw;
+data([1 2 3],:) = []; %remove blank rows
+%data(:,[2 4 8 16]) = []; %remove blank columns 
+
+year = data(:,1);
+gdp = data(:,3);
+gdph = data(:,5);
+ip_times_100 = data(:,6);
+le_div_20 = data(:,7);
+le = data(:,9);
+le_lf = data(:,10);
+ip = data(:,11);
+inflation = data(:,12);
+pcu = data(:,13);
+ip_times_20 = data(:,14);
+hst = data(:,15);
+lf = data(:,17);
+
+%% Chart 1: GDP
+close all;
+
+figure
+plot(year,gdp,'b')
+grid on
+ylim([0,20000])
+set(gca,'YTickLabel',num2str(get(gca,'YTick')'))
+title('GDP (1990-2015)')
+xlabel('Year')
+ylabel('Billions of Current Dollars')
+
+%% Chart 2: Nominal vs Real GDP
+close all;
+
+figure
+plot(year,gdp,'b')
+hold on
+plot(year,gdph,'r')
+grid on
+ylim([0,20000])
+set(gca,'YTickLabel',num2str(get(gca,'YTick')','%d'))
+title('Nominal vs Real GDP (1990-2015)')
+xlabel('Year')
+ylabel('Billions of 2005 Dollars for Real GDP')
+legend('Nominal GDP','Infl. Adj. GDP','Location','best')
+
+%% Chart 3: Real GDP vs Employment
+close all;
+
+figure
+plot(year,gdph,'b')
+hold on
+plot(year,le_div_20,'r')
+grid on
+ylim([0,18000])
+set(gca,'YTickLabel',num2str(get(gca,'YTick')','%d'))
+title('Real GDP vs Employment (1990-2015)')
+xlabel('Year')
+ylabel('Billions and Employment in Thousands/20')
+legend('Real GDP','Employment in Thousands/20','Location','best')
+
+%% Chart 4: Real GDP vs Industrial Production
+close all;
+
+figure
+plot(year,gdph,'b')
+hold on
+plot(year,ip_times_100,'r')
+grid on
+ylim([0,18000])
+set(gca,'YTickLabel',num2str(get(gca,'YTick')','%d'))
+title('Real GDP vs Industrial Production (1990-2015)')
+xlabel('Year')
+ylabel('Billions of 2005 Dollars')
+legend('Real GDP','Industrial Production','Location','best')
+
+%% Chart 5: Ind. Production vs Housing Starts
+close all;
+
+figure
+plot(year,ip_times_20,'b')
+hold on
+plot(year,hst,'r')
+grid on
+ylim([0,2500])
+set(gca,'YTickLabel',num2str(get(gca,'YTick')','%d'))
+title('Ind. Production vs Housing Starts (1990-2015)')
+xlabel('Year')
+ylabel('Housing Starts in Hundreds of Thousands')
+legend('Industrial Production','Housing Starts','Location','best')
+
+%% Chart 6: Inflation Rate
+close all;
+
+figure
+plot(year,inflation,'b')
+grid on
+set(gca,'YTickLabel',sprintf('%.2f\n',get(gca,'YTick')))
+title('Inflation Rate (1990-2015)')
+xlabel('Year')
+ylabel('Percent Change')
+##### SOURCE END #####
+--></body></html>
